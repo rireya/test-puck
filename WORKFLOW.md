@@ -2,85 +2,36 @@
 
 ## 📊 워크플로우 다이어그램
 
+### 전체 흐름 (High-Level)
+
 ```mermaid
-graph TD
-    A[1. 컴포넌트 생성] -->|stories/YourComponent.tsx| B[2. Export 추가]
-    B -->|src/index.ts| C[3. 라이브러리 빌드]
-    C -->|npm run build-lib| D[4. Puck Config 업데이트]
-    D -->|puck.config.tsx| E[5. Puck 에디터에서 사용]
+graph LR
+    A[Storybook<br/>컴포넌트 개발] -->|빌드| B[라이브러리<br/>패키지]
+    B -->|통합| C[Puck<br/>페이지 빌더]
+    C -->|사용| D[드래그앤드롭<br/>UI 구성]
+    D -->|생성| E[React/JSON<br/>코드 Export]
 
-    A -->|포함| A1[.tsx 파일]
-    A -->|포함| A2[.css 파일]
-    A -->|포함| A3[.stories.ts 파일]
-
-    C -->|생성| C1[dist/ 폴더]
-    C1 -->|포함| C2[컴포넌트 JS]
-    C1 -->|포함| C3[CSS 파일]
-    C1 -->|포함| C4[타입 정의]
-
-    E -->|드래그앤드롭| F[페이지 구성]
-    F -->|View Code| G[코드/JSON 생성]
-
-    style A fill:#e1f5ff
-    style C fill:#fff4e1
-    style D fill:#ffe1f5
-    style E fill:#e1ffe1
-    style G fill:#f5e1ff
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#f3e5f5
+    style D fill:#e8f5e9
+    style E fill:#fce4ec
 ```
 
-### 전체 플로우
+### 개발 워크플로우
 
 ```mermaid
 sequenceDiagram
     participant Dev as 개발자
     participant SB as Storybook
-    participant Lib as 라이브러리
     participant Puck as Puck Editor
-    participant Export as Export 기능
+    participant Output as 산출물
 
-    Dev->>SB: 1. 컴포넌트 생성 (tsx, css, stories)
-    Dev->>SB: 2. src/index.ts에 export 추가
-    Dev->>Lib: 3. npm run build-lib
-    Lib-->>Lib: Vite 빌드 (dist/ 생성)
-
-    Dev->>Puck: 4. puck.config.tsx 업데이트
-    Note over Puck: - import 추가<br/>- 타입 정의<br/>- fields/render 설정
-
-    Puck-->>Puck: HMR 자동 반영
-    Dev->>Puck: 5. 에디터에서 컴포넌트 사용
-
-    Puck->>Export: View Code 클릭
-    Export-->>Dev: React JSX / SDUI JSON
-```
-
-### 파일 구조 흐름
-
-```mermaid
-graph LR
-    subgraph test-storybook
-        S1[stories/YourComponent.tsx]
-        S2[stories/YourComponent.css]
-        S3[src/index.ts]
-        S4[dist/]
-    end
-
-    subgraph test-puck
-        P1[src/puck.config.tsx]
-        P2[Puck Editor]
-        P3[View Code]
-    end
-
-    S1 --> S3
-    S2 --> S3
-    S3 -->|npm run build-lib| S4
-    S4 -->|import| P1
-    P1 --> P2
-    P2 --> P3
-
-    style S3 fill:#ffe1e1
-    style S4 fill:#e1ffe1
-    style P1 fill:#e1e1ff
-    style P3 fill:#ffe1ff
+    Dev->>SB: 1. 컴포넌트 개발 & 테스트
+    SB->>SB: 2. 라이브러리 빌드
+    Dev->>Puck: 3. 컴포넌트 등록
+    Puck->>Puck: 4. 드래그앤드롭 페이지 구성
+    Puck->>Output: 5. React/SDUI 코드 생성
 ```
 
 ---
