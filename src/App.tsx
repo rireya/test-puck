@@ -48,7 +48,15 @@ function App() {
         onChange={(data) => setCurrentData(data)}
         onPublish={async (data) => {
           console.log('Published data:', data);
-          alert('Page published! Check console for data.');
+          alert(
+            '📢 Publish 버튼의 실제 운영 역할:\n\n' +
+            '✅ 데이터베이스에 페이지 저장\n' +
+            '✅ CMS로 콘텐츠 전송\n' +
+            '✅ 배포 파이프라인 트리거\n' +
+            '✅ 버전 관리 (히스토리 저장)\n' +
+            '✅ API 엔드포인트로 POST 요청\n\n' +
+            '현재는 데모 모드: 콘솔에서 JSON 데이터를 확인하세요.'
+          );
         }}
         overrides={{
           headerActions: ({ children }) => (
